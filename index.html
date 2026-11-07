@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sunbịp - Sảnh Game VIP</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lobby-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 30px;
+      width: 100%;
+    }
+    .game-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .game-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
+      border-color: #fbbf24;
+    }
+    .game-card .icon { font-size: 50px; }
+    .game-card .info { text-align: left; flex: 1; margin-left: 20px; }
+    .game-card .title { font-size: 22px; font-weight: 900; color: var(--gold-glow); }
+    .game-card .desc { font-size: 13px; color: #cbd5e1; margin-top: 4px; }
+    .btn-play {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 900;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="casino-app">
+    <header class="game-header">
+      <div class="header-left">
+        <div class="logo">🎲 SUN<span>BỊP</span></div>
+        <div class="session-badge">SẢNH GAME</div>
+      </div>
+      <div class="header-right">
+        <div class="balance-card">
+          <span class="coin-icon">💰</span>
+          <span id="balance">0</span>
+          <button class="btn-add-money" id="btn-open-deposit" title="Nạp tiền">+</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="casino-board">
+      <h2 style="color: #fff; text-align: center; margin-top: 10px;">CHỌN GAME YÊU THÍCH</h2>
+      <div class="lobby-container">
+        
+        <!-- Tài Xỉu -->
+        <div class="game-card" onclick="location.href='taixiu.html'">
+          <div class="icon">🎲</div>
+          <div class="info">
+            <div class="title">TÀI XỈU VIP</div>
+            
+          </div>
+          <button class="btn-play">VÀO CHƠI</button>
+        </div>
+
+        <!-- Nổ Hũ 7x5 -->
+        <div class="game-card" onclick="location.href='nohu.html'" style="border-color: #c084fc;">
+          <div class="icon">🎰</div>
+          <div class="info">
+            <div class="title" style="color: #c084fc;">NỔ HŨ 7x5 VĨNH CỬU</div>
+            
+          </div>
+          <button class="btn-play" style="background: linear-gradient(135deg, #a855f7, #6b21a8);">VÀO CHƠI</button>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Modal Nạp Tiền -->
+    <div class="modal-overlay" id="modal-deposit">
+      <div class="modal-card" style="max-width: 320px;">
+        <div class="modal-header">
+          <div class="modal-title">💰 NẠP TIỀN SUNBỊP</div>
+          <button class="btn-close" id="btn-close-deposit">✕</button>
+        </div>
+        <div class="modal-body" style="text-align: center; padding: 10px 0;">
+          <input type="number" id="deposit-input" placeholder="Nhập số tiền..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; text-align: center; margin-bottom: 12px;">
+          <div style="display: flex; gap: 6px; justify-content: center; margin-bottom: 14px;">
+            <button class="btn-chip-quick" onclick="setDepositVal(100000)">+100K</button>
+            <button class="btn-chip-quick" onclick="setDepositVal(500000)">+500K</button>
+            <button class="btn-chip-quick" onclick="setDepositVal(1000000)">+1M</button>
+          </div>
+          <button class="btn-confirm" id="btn-submit-deposit" style="width: 100%; padding: 12px;">XÁC NHẬN NẠP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let balance = localStorage.getItem('sunbip_balance') !== null ? parseFloat(localStorage.getItem('sunbip_balance')) : 0;
+    document.getElementById('balance').textContent = balance.toLocaleString();
+
+    const modalDeposit = document.getElementById('modal-deposit');
+    document.getElementById('btn-open-deposit').onclick = () => modalDeposit.classList.add('open');
+    document.getElementById('btn-close-deposit').onclick = () => modalDeposit.classList.remove('open');
+    function setDepositVal(v) { document.getElementById('deposit-input').value = v; }
+    
+    document.getElementById('btn-submit-deposit').onclick = () => {
+      let val = parseFloat(document.getElementById('deposit-input').value);
+      if (!isNaN(val) && val > 0) {
+        balance += val;
+        localStorage.setItem('sunbip_balance', balance);
+        document.getElementById('balance').textContent = balance.toLocaleString();
+        modalDeposit.classList.remove('open');
+        document.getElementById('deposit-input').value = '';
+      }
+    };
+  </script>
+</body>
+</html>
