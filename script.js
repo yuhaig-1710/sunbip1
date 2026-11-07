@@ -40,10 +40,16 @@ const placedXiu = document.getElementById('placed-xiu');
 const btnConfirm = document.getElementById('btn-confirm');
 const ratioText = document.getElementById('ratio-text');
 
-// Audio Synthesizer
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// Audio Synthesizer (Khởi tạo trễ để tránh lỗi Autoplay của trình duyệt)
+let audioCtx = null;
 function playSound(type) {
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.connect(gain);
